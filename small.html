@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @keyframes move  {
+            from {
+                position: relative;
+                left: 0px;
+            }
+            to {
+                position: relative;
+                left: 100px;
+            }
+        }
+        .animate {
+            animation-name: move;
+            animation-duration: 1s;
+        }
+
+        .animated  {
+            position: relative;
+            left: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box" style="width: 100px; height: 100px; background: red; margin: 0 auto;"></div>
+    <button onclick="handle()">Animate</button>
+    <script>
+//         Small Coding Exercise 
+// Solve each of the following coding exercises:
+
+    // ms: number of milliseconds
+    // returns a Promise that is resolved after ms milliseconds
+    function delay(ms) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, ms);
+        }) ;
+    } 
+
+    // el: element node object
+    // moves the element to the right by 100px over a duration of 1 second
+    function animateRight(el) {
+        el.classList.add('animate');
+        setTimeout(() => {
+            el.classList.remove('animate');
+            el.classList.add('animated');
+        }, 900);
+    }
+
+    // xs: array
+    // returns: a new array, with unique items
+    function removeDuplicates(xs) {
+        return [...new Set(xs)];
+    } 
+
+    function handle() {
+        const el = document.getElementById('box');
+        animateRight(el);
+    }
+
+    </script>
+</body>
+</html>

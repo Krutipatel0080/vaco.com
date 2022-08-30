@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        .link {
+            margin: 10px;
+            border-radius: 10px;
+            background: #d2d2d2;
+            padding: 10px;
+            display: inline-block;
+        }
+    </style>
+  </head>
+  <body>
+    <img id="img" src="" alt="" />
+
+    <div id="image-links"></div>
+    <script>
+        let breeds = [];
+      // getting random image
+      fetch("https://dog.ceo/api/breeds/image/random")
+        .then((response) => response.json())
+        .then((data) => {
+          let imgEl = document.querySelectorAll("#img")[0];
+          imgEl.src = data.message;
+        });
+        /* getBreeds will return promise which will list all breeds */
+        function getBreeds() {
+            return fetch(`https://dog.ceo/api/breeds/list/all`).then(res => res.json())
+            .then((data) => Promise.resolve(Object.keys(data.message).slice(0, 10)))
+        }
+
+        getBreeds().then((breeds) => {
+            const data = breeds.map((breed) => ({ name: breed, url: `https://dog.ceo/api/breed/${breed}/images/random`}))
+            const calls = data.map((d) => fetch(d.url).then((res) => res.json()));
+            Promise.all(calls).then((res, index) => {
+                const imgSrcs = res.map((r) => r.message);
+                imgSrcs.forEach((src, index) => {
+                    data[index]['src'] = src;
+                });
+                data.forEach((d) => {
+                addImageLink(d.name, d.src);
+                });
+            });
+        });
+        
+        /* adds the image link in the document */
+        function addImageLink(name, href) {
+            const containerEl = document.querySelector('#image-links');
+            const a = document.createElement('a');
+            a.innerText = name;
+            a.href = href;
+            a.classList.add('link');
+            containerEl.appendChild(a);
+        }
+    </script>
+  </body>
+</html>
